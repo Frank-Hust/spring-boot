@@ -266,6 +266,8 @@ public class PropertiesConfigurationFactory<T>
 		dataBinder.setIgnoreUnknownFields(this.ignoreUnknownFields);
 		customizeBinder(dataBinder);
 		Iterable<String> relaxedTargetNames = getRelaxedTargetNames();
+		//返回1344个..完全不明白干什么的...噗..用于设置spring.main的属性.
+		//比如spring.
 		Set<String> names = getNames(relaxedTargetNames);
 		PropertyValues propertyValues = getPropertySourcesPropertyValues(names,
 				relaxedTargetNames);
@@ -306,6 +308,7 @@ public class PropertiesConfigurationFactory<T>
 				}
 			}
 		}
+		//spring.mian和这个类的属性的组合, 有1344个..这是干什么的...
 		return names;
 	}
 

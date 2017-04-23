@@ -76,6 +76,7 @@ public class RelaxedPropertyResolver implements PropertyResolver {
 
 	@Override
 	public <T> T getProperty(String key, Class<T> targetType, T defaultValue) {
+		//通过对不同的RelaxedNames进行迭代, 判断propertySource中是否存在值. PropertySource使用map实现
 		RelaxedNames prefixes = new RelaxedNames(this.prefix);
 		RelaxedNames keys = new RelaxedNames(key);
 		for (String prefix : prefixes) {

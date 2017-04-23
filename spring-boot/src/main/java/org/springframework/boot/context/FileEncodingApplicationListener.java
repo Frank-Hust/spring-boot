@@ -42,6 +42,8 @@ import org.springframework.core.Ordered;
  * character-encoding value (e.g. "en_GB.UTF-8").
  *
  * @author Dave Syer
+ * 强制System.getProperty("file.encoding")与spring.mandatoryFileEncoding一致,否则抛异常. 默认没有设置.
+ * 在EnvironmentPrepared事件时被调用
  */
 public class FileEncodingApplicationListener
 		implements ApplicationListener<ApplicationEnvironmentPreparedEvent>, Ordered {

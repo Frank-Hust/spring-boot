@@ -212,7 +212,7 @@ public class SpringApplication {
 	private boolean webEnvironment;
 
 	private boolean headless = true;
-
+	//设置shutdownHook,在jvm收到kill命令时,会自动调用shutdownHook
 	private boolean registerShutdownHook = true;
 
 	private List<ApplicationContextInitializer<?>> initializers;
@@ -256,6 +256,7 @@ public class SpringApplication {
 		if (sources != null && sources.length > 0) {
 			this.sources.addAll(Arrays.asList(sources));
 		}
+		//检测是否是web环境. 通过是否存在这两个类来进行检查"javax.servlet.Servlet","org.springframework.web.context.ConfigurableWebApplicationContext"
 		this.webEnvironment = deduceWebEnvironment();
 		setInitializers((Collection) getSpringFactoriesInstances(
 				ApplicationContextInitializer.class));
@@ -272,6 +273,7 @@ public class SpringApplication {
 		return true;
 	}
 
+	//通过生成一个异常, 获取stackTrace, 来获得启动的main方法
 	private Class<?> deduceMainApplicationClass() {
 		try {
 			StackTraceElement[] stackTrace = new RuntimeException().getStackTrace();
@@ -299,6 +301,10 @@ public class SpringApplication {
 		ConfigurableApplicationContext context = null;
 		FailureAnalyzers analyzers = null;
 		configureHeadlessProperty();
+		//listeners是一系列SpringApplicationRunListener的list,SpringApplicationRunListener对SpringApplication的run方法监听
+		//也就是ApplicationContext refresh的事件监听
+		//默认的SpringApplicationRunListener只有EventPublishingRunListener, 其里面有一个SimpleApplicationEventMulticaster initialMulticaster
+		//负责对这些事件广播给相应的listener
 		SpringApplicationRunListeners listeners = getRunListeners(args);
 		listeners.starting();
 		try {
@@ -333,6 +339,7 @@ public class SpringApplication {
 		// Create and configure the environment
 		ConfigurableEnvironment environment = getOrCreateEnvironment();
 		configureEnvironment(environment, applicationArguments.getSourceArgs());
+		//这里发送ApplicationEnvironmentPreparedEvent事件.由ConfigFileApplicationListener进行处理.
 		listeners.environmentPrepared(environment);
 		if (isWebEnvironment(environment) && !this.webEnvironment) {
 			environment = convertToStandardEnvironment(environment);
@@ -393,6 +400,7 @@ public class SpringApplication {
 		return getSpringFactoriesInstances(type, new Class<?>[] {});
 	}
 
+	//获取类路径下META-INF/spring.factories文件(一般在spring boot各个jar包里, 也可以放在自己工程中)中设置的类的实例.
 	private <T> Collection<? extends T> getSpringFactoriesInstances(Class<T> type,
 			Class<?>[] parameterTypes, Object... args) {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -434,6 +442,7 @@ public class SpringApplication {
 		if (this.webEnvironment) {
 			return new StandardServletEnvironment();
 		}
+		//包含了PropertySource: systemProperties,systemEnvironments
 		return new StandardEnvironment();
 	}
 
@@ -449,8 +458,10 @@ public class SpringApplication {
 	 * @see #configurePropertySources(ConfigurableEnvironment, String[])
 	 */
 	protected void configureEnvironment(ConfigurableEnvironment environment,
-			String[] args) {
+										String[] args) {
+		//添加commandLandArgs到propertySource
 		configurePropertySources(environment, args);
+		//根据命令行, jvm属性, 环境变量等确定激活的profile
 		configureProfiles(environment, args);
 	}
 
@@ -531,6 +542,8 @@ public class SpringApplication {
 		environment.getActiveProfiles(); // ensure they are initialized
 		// But these ones should go first (last wins in a property key clash)
 		Set<String> profiles = new LinkedHashSet<String>(this.additionalProfiles);
+		//AbstractEnvironment中的getActiveProfiles()
+		//可以有很多地方配置. PropertySource有很多. 可以在命令行中配置  --spring.profiles.active=debug,test, 将会返回String的数组{debug,test}
 		profiles.addAll(Arrays.asList(environment.getActiveProfiles()));
 		environment.setActiveProfiles(profiles.toArray(new String[profiles.size()]));
 	}

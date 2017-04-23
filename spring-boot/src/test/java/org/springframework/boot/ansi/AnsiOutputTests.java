@@ -45,6 +45,7 @@ public class AnsiOutputTests {
 	public void encoding() throws Exception {
 		String encoded = AnsiOutput.toString("A", AnsiColor.RED, AnsiStyle.BOLD, "B",
 				AnsiStyle.NORMAL, "D", AnsiColor.GREEN, "E", AnsiStyle.FAINT, "F");
+		System.out.println(encoded);
 		assertThat(encoded).isEqualTo("A[31;1mB[0mD[32mE[2mF[0;39m");
 	}
 

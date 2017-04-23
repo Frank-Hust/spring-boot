@@ -16,6 +16,8 @@
 
 package org.springframework.boot.bind;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * Strategy interface used to check if a property name matches specific criteria.
  *
@@ -23,6 +25,7 @@ package org.springframework.boot.bind;
  * @since 1.2.0
  */
 interface PropertyNamePatternsMatcher {
+	AtomicLong adder=new AtomicLong(0);
 
 	PropertyNamePatternsMatcher ALL = new PropertyNamePatternsMatcher() {
 

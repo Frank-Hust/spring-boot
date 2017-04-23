@@ -164,6 +164,9 @@ public class ConfigFileApplicationListener implements EnvironmentPostProcessor,
 
 	private void onApplicationEnvironmentPreparedEvent(
 			ApplicationEnvironmentPreparedEvent event) {
+		//从spring.factories文件中加载EnvironmentPostProcessor类
+		// SpringApplicationJsonEnvironmentPostProcessor--加载spring.application.json配置
+		//CloudFoundryVcapEnvironmentPostProcessor--处理Cloud Foundry配置的类
 		List<EnvironmentPostProcessor> postProcessors = loadPostProcessors();
 		postProcessors.add(this);
 		AnnotationAwareOrderComparator.sort(postProcessors);

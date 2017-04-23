@@ -31,7 +31,7 @@ import org.springframework.http.converter.support.AllEncompassingFormHttpMessage
 /**
  * {@link ApplicationListener} to trigger early initialization in a background thread of
  * time consuming tasks.
- *
+ * 在EnvironmentPrepared事件发出后进行初始化
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 1.3.0

@@ -82,9 +82,11 @@ class SpringApplicationBannerPrinter {
 		if (this.fallbackBanner != null) {
 			return this.fallbackBanner;
 		}
+		//默认banner
 		return DEFAULT_BANNER;
 	}
 
+	//banner.image.location+banner.txt
 	private Banner getTextBanner(Environment environment) {
 		String location = environment.getProperty(BANNER_LOCATION_PROPERTY,
 				DEFAULT_BANNER_LOCATION);
@@ -95,6 +97,7 @@ class SpringApplicationBannerPrinter {
 		return null;
 	}
 
+	//banner.image.location+banner.gif/jpg/png
 	private Banner getImageBanner(Environment environment) {
 		String location = environment.getProperty(BANNER_IMAGE_LOCATION_PROPERTY);
 		if (StringUtils.hasLength(location)) {

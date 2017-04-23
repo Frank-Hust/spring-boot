@@ -262,6 +262,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 	/**
 	 * Initialize the logging system according to preferences expressed through the
 	 * {@link Environment} and the classpath.
+	 * 在EnvironmentPrepared事件发生后, 进行初始化. 读取logging配置
 	 * @param environment the environment
 	 * @param classLoader the classloader
 	 */

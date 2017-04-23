@@ -19,6 +19,7 @@ package org.springframework.boot.bind;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * {@link PropertyNamePatternsMatcher} that matches when a property name exactly matches
@@ -29,7 +30,6 @@ import java.util.Set;
  * @since 1.2.0
  */
 class DefaultPropertyNamePatternsMatcher implements PropertyNamePatternsMatcher {
-
 	private final char[] delimiters;
 
 	private final boolean ignoreCase;
@@ -58,6 +58,7 @@ class DefaultPropertyNamePatternsMatcher implements PropertyNamePatternsMatcher 
 		boolean[] match = new boolean[this.names.length];
 		boolean noneMatched = true;
 		for (int i = 0; i < this.names.length; i++) {
+			adder.getAndAdd(1);
 			if (this.names[i].length() <= propertyNameChars.length) {
 				match[i] = true;
 				noneMatched = false;
